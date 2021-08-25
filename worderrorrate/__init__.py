@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ## perform alignment for word error rate and similar DTW problems.
 ## Inspired by https://martin-thoma.com/word-error-rate-calculation/
@@ -96,9 +96,9 @@ class WER(object):
     def __repr__(self):
         ref, hyp, eva = self.pralign()
         lengths = [max(len(str(r)), len(str(h)), len(str(e))) for r, h, e in zip(ref, hyp, eva)]
-        out = "REF: " + " ".join(("%%%ds" % l) % str(s) for l, s in zip(lengths, ref)) + "\n"
-        out += "HYP: " + " ".join(("%%%ds" % l) % str(s) for l, s in zip(lengths, hyp)) + "\n"
-        out += "Eval " + " ".join(("%%%ds" % l) % str(s) for l, s in zip(lengths, eva))
+        out = f"REF: {' '.join(('%%%ds' % l) % str(s) for l, s in zip(lengths, ref))}\n" + \
+            f"HYP: {' '.join(('%%%ds' % l) % str(s) for l, s in zip(lengths, hyp))}\n" + \
+            f"Eval {' '.join(('%%%ds' % l) % str(s) for l, s in zip(lengths, eva))}\n"
         return out
 
 
