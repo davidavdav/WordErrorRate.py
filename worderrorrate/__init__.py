@@ -100,8 +100,40 @@ class WER(object):
             f"HYP: {' '.join(('%%%ds' % l) % str(s) for l, s in zip(lengths, hyp))}\n" + \
             f"Eval {' '.join(('%%%ds' % l) % str(s) for l, s in zip(lengths, eva))}\n"
         return out
+    
+    @property
+    def nref(self):
+        return len(self.ref)
+    
+    @property
+    def nhyp(self):
+        return len(self.hyp)
 
+class WERs:
+    def __init__(self, subcost=4, inscost=3, delcost=3):
+        self.subcost = subcost
+        self.inscost = inscost
+        self.delcost = delcost
+        self.wers = list()
+        for attr in ['nref', 'nhyp', 'ndel', 'nins', 'nsub', 'nerr']:
+            setattr(self, attr, 0)
+        
+    def append(self, ref, hyp):
+        wer = WER(ref, hyp, self.subcost, self.inscost, self.delcost)
+        self.wers.append(wer)
+        for attr in ['nref', 'nhyp', 'ndel', 'nins', 'nsub', 'nerr']:
+            setattr(self, attr, getattr(self, attr) + getattr(wer, attr))
 
+    def wer(self):
+        return self.nerr / self.nref
+    
+    def align(self):
+        return [wer.align() for wer in self.wers]
+    
+    @property
+    def nutt(self):
+        return len(self.wers)
+        
 
 def gentest(n=1000, v=100, p=0.25):
     ref = [random.randrange(v) for i in range(n)]

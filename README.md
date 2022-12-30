@@ -15,9 +15,14 @@ Usage:
 ```python
 import worderrorrate
 
-w = worderrorrate.WER(["this", "is", "a", "test"], "this is another".split()])
+w = worderrorrate.WER(["this", "is", "a", "test"], "this is another".split())
 print("Full alignment:\n", w)
 print("The word error rate is", w.wer())
-align = w.align()
-print("Alignment indices:", align.refali, align.hypali, align.evalali)
+refali, hypali, evalali = w.align()
+print("Alignment indices:", refali, hypali, evalali)
+
+ws = worderrorrate.WERs() ## multiple utterances
+ws.append(["this", "is", "a", "test"], "this is another".split())
+ws.append("a b c d".split(), "a c e".split())
+ws.wer()
 ```
